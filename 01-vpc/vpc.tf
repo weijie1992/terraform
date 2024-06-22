@@ -17,6 +17,10 @@ provider "aws" {
 # 5) create a route table association to link route table to public subnet
 resource "aws_vpc" "weijie-vpc" {
   cidr_block = "10.0.0.0/24"
+
+  tags = {
+    Name = "Weijie Terraform VPC"
+  }
 }
 
 resource "aws_subnet" "weijie-public-subnet" {
