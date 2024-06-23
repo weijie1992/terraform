@@ -1,0 +1,3 @@
+bucket = "weijie-test-bucket"
+key    = "04-backends/prod/state.tfstate"
+region = "ap-southeast-1"
