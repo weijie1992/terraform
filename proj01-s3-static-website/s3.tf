@@ -28,3 +28,29 @@ resource "aws_s3_bucket_policy" "static_website_public_read" {
   })
   depends_on = [aws_s3_bucket.static_website, aws_s3_bucket_public_access_block.static_website] //not really required this is to ensurethat s3 bucket and public access policy is created before s3 bucket policy being create and apply to s3 bucket. However this is fails 
 }
+
+resource "aws_s3_bucket_website_configuration" "static_website" {
+  bucket = aws_s3_bucket.static_website.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+}
+resource "aws_s3_object" "index_html" {
+  bucket       = aws_s3_bucket.static_website.id
+  key          = "index.html"
+  source       = "build/index.html"
+  etag         = filemd5("build/index.html")
+  content_type = "text/html"
+}
+resource "aws_s3_object" "error_html" {
+  bucket       = aws_s3_bucket.static_website.id
+  key          = "error.html"
+  source       = "build/error.html"
+  etag         = filemd5("build/error.html")
+  content_type = "text/html"
+}
