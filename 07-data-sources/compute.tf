@@ -12,46 +12,42 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 }
-
 output "ubuntu_ami_data" {
   value = data.aws_ami.ubuntu.id
 }
-
 data "aws_caller_identity" "current" {}
-
+output "aws_caller_identity_data" {
+  value = data.aws_caller_identity.current
+}
 data "aws_region" "current" {}
-
+output "aws_region_data" {
+  value = data.aws_region.current
+}
 data "aws_vpc" "default" {
   tags = {
     "Name" = "wj-test"
   }
 }
-
-
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
 }
-
-
-output "aws_caller_identity_data" {
-  value = data.aws_caller_identity.current
-}
-
-output "aws_region_data" {
-  value = data.aws_region.current
-}
-
 output "subnet_ids" {
   value = data.aws_subnets.default.ids
 }
-
 output "subnet_count" {
   value = length(data.aws_subnets.default.ids)
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+output "azs" {
+  value = data.aws_availability_zones.available
+}
 
 resource "aws_instance" "web" {
   ami                         = data.aws_ami.ubuntu.id
