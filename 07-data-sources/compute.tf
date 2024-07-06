@@ -17,6 +17,18 @@ output "ubuntu_ami_data" {
   value = data.aws_ami.ubuntu.id
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
+output "aws_caller_identity_data" {
+  value = data.aws_caller_identity.current
+}
+
+output "aws_region_data" {
+  value = data.aws_region.current
+}
+
 resource "aws_instance" "web" {
   ami                         = data.aws_ami.ubuntu.id
   associate_public_ip_address = true
