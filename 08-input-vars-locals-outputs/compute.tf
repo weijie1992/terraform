@@ -1,3 +1,4 @@
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"] #Owner is Canonical
@@ -30,7 +31,7 @@ resource "aws_instance" "compute" {
     volume_size           = var.ec2_volume_config.size
     volume_type           = var.ec2_volume_config.type
   }
-  tags = merge(var.additional_tags, {
-    ManagedBy = "terraform"
+  tags = merge(local.common_tags, var.additional_tags, {
+    ManagedBy = local.managed_by
   })
 }
