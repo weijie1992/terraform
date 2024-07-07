@@ -1,6 +1,5 @@
 variable "ec2_instance_type" {
-  type    = string
-  default = "t2.micro"
+  type = string
 
   validation {
     # condition     = var.ec2_instance_type == "t2.micro" || var.ec2_instance_type == "t3.micro"
@@ -38,6 +37,6 @@ variable "additional_tags" {
   type = map(string)
   default = {
   }
-
 }
+
 
