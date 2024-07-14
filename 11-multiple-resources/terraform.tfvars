@@ -6,6 +6,6 @@ ec2_instance_config_list = [{
   },
   {
     ami           = "nginx"
-    instance_type = "t3.micro"
+    instance_type = "t2.micro"
   }
 ]

@@ -13,4 +13,13 @@ variable "ec2_instance_config_list" {
     instance_type = string
     ami           = string
   }))
+
+  validation {
+    condition     = alltrue([for config in var.ec2_instance_config_list : contains(["t2.micro"], config.instance_type)])
+    error_message = "Only t2.micro is allow"
+  }
+  validation {
+    condition     = alltrue([for config in var.ec2_instance_config_list : contains(["ubuntu", "nginx"], config.ami)])
+    error_message = "Only Ubuntu and Nginx ami are allow"
+  }
 }
