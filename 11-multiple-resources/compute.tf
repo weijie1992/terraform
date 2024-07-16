@@ -46,7 +46,6 @@ resource "aws_instance" "from_count" {
   }
 }
 
-
 resource "aws_instance" "from_list" {
   count         = length(var.ec2_instance_config_list)
   ami           = local.ami_ids[var.ec2_instance_config_list[count.index].ami]
@@ -56,5 +55,18 @@ resource "aws_instance" "from_list" {
   tags = {
     Project = local.project
     Name    = "${local.project}-${count.index}"
+  }
+}
+
+resource "aws_instance" "from_map" {
+  # each.key, each.value
+  for_each      = var.ec2_instance_config_map
+  ami           = local.ami_ids[each.value.ami]
+  instance_type = each.value.instance_type
+  subnet_id     = aws_subnet.main[each.value.subnet_index].id
+
+  tags = {
+    Project = local.project
+    Name    = "${local.project}-${each.key}"
   }
 }
