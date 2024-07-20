@@ -28,16 +28,19 @@ locals {
 output "role_policies_list" {
   value = local.role_policies_list
 }
-output "aws_iam_role" {
-  value = aws_iam_role.roles
-}
+
+data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "assume_role_policy" {
+  for_each = toset(keys(local.role_policies))
   statement {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::102097092766:user/john3"]
+      type = "AWS"
+      identifiers = [
+        for username in keys(aws_iam_user.users) : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${username}"
+        if contains(local.users_map[username], each.value)
+      ]
     }
   }
 }
@@ -45,7 +48,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 resource "aws_iam_role" "roles" {
   for_each           = toset(keys(local.role_policies))
   name               = each.key
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy[each.key].json
 }
 
 data "aws_iam_policy" "managed_policies" {
