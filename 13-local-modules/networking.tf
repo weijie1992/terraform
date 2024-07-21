@@ -12,6 +12,7 @@ module "networking" {
     }
     subnet_2 = {
       cidr_block = "10.0.0.16/28"
+      public     = true
       az         = "ap-southeast-1b"
     }
   }
