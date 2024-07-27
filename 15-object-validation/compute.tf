@@ -20,7 +20,10 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "this" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  subnet_id     = aws_subnet.main.id
+  subnet_id     = aws_subnet.main[0].id
+  tags = {
+    CostCenter = "test"
+  }
   root_block_device { //not required
     delete_on_termination = true
     volume_size           = 10
@@ -33,9 +36,16 @@ resource "aws_instance" "this" {
       condition     = contains(local.allow_instance_types, self.instance_type)
       error_message = "Invalid instance type"
     }
-    postcondition {
-      condition     = self.availability_zone == "eu-central-1a"
-      error_message = "Invalid AZ"
-    }
+    # postcondition {
+    #   condition     = self.availability_zone == "eu-central-1a"
+    #   error_message = "Invalid AZ"
+    # }
+  }
+}
+
+check "cost_center_check" {
+  assert {
+    condition     = can(aws_instance.this.tags["CostCenter"] != "")
+    error_message = "Your AWS instance does not have a cost center"
   }
 }
