@@ -1,7 +1,7 @@
-import {
-  to = aws_lambda_function.this
-  id = "weijie-manually-create"
-}
+# import {
+#   to = aws_lambda_function.this
+#   id = "weijie-manually-create"
+# }
 
 data "archive_file" "lambda_code" {
   type        = "zip"

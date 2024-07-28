@@ -1,12 +1,12 @@
-import {
-  to = aws_iam_role.lambda_execution_role
-  id = "weijie-manually-create-role-7avuav4o"
-}
+# import {
+#   to = aws_iam_role.lambda_execution_role
+#   id = "weijie-manually-create-role-7avuav4o"
+# }
 
-import {
-  to = aws_iam_policy.lambda_execution
-  id = "arn:aws:iam::479833041972:policy/service-role/AWSLambdaBasicExecutionRole-7e2ad7db-cf75-449b-be59-36f7b8ecf25c"
-}
+# import {
+#   to = aws_iam_policy.lambda_execution
+#   id = "arn:aws:iam::479833041972:policy/service-role/AWSLambdaBasicExecutionRole-7e2ad7db-cf75-449b-be59-36f7b8ecf25c"
+# }
 
 data "aws_iam_policy_document" "assume_lambda_execution_role" {
   statement {
